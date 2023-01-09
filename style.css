@@ -225,7 +225,7 @@ h4 {
   width: 100%;
   z-index: -1;
   opacity: 0.98;
-  transform: scale(1.075, 1.08) skewX(-30deg);
+  transform: scale(1.075, 1.08) skewX(-20deg);
   background-image: var(--gradient-primary2);
 }
 

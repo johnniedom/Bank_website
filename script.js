@@ -72,15 +72,28 @@ scrollBtn.addEventListener(`click`, e => {
 
 //Page Navigation
 
-const link = document.querySelectorAll(`.nav__link`);
+const link = document.querySelector(`.nav__link`);
+const links = document.querySelector(`.nav__links`);
 
-link.forEach(el =>
-  el.addEventListener(`click`, function (e) {
-    e.preventDefault();
-    const id = el.getAttribute(`href`);
+// // Using the old method way.
+// link.forEach(el =>
+// el.addEventListener(`click`, function (e) {
+
+//   );
+// The advantage of event Bubbling
+//1. add eventListener to common parent element
+// 2.Determine what element originated the event
+
+links.addEventListener(`click`, function (e) {
+  console.log(e.target);
+  e.preventDefault();
+
+  // Matching strategy
+  if (e.target.classList.contains(`nav__link`)) {
+    const id = e.target.getAttribute(`href`);
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-  })
-);
+  }
+});
 
 ///////////////////////////////////////
 //////////////////////////////////////
@@ -214,21 +227,73 @@ const randomColor = () =>
 
 console.log(randomColor());
 // const linkR = document.querySelector(`.nav__link`);
-const links = document.querySelector(`.nav__links`);
+// const navLinks = document.querySelector(`.nav__links`);
 const navBar = document.querySelector(`.nav`);
 
-// linkR.addEventListener(`click`, function(e) {
-//   console.log(e, e.currentTarget === this);
-//   // this.style.backgroundColor = randomColor();
+// link.addEventListener(`click`, function (e) {
+//   console.log(e, e.target, e.currentTarget === this);
+//   this.style.backgroundColor = randomColor();
 
 //   // stop event propagation
 //   // e.stopPropagation();
 // });
-// links.addEventListener(`click`, function(e) {
-//   console.log(this);
-//   // this.style.backgroundColor = randomColor();
+// links.addEventListener(`click`, function (e) {
+//   console.log(this, e.target);
+//   this.style.backgroundColor = randomColor();
 // });
-// navBar.addEventListener(`click`, function(e) {
+// navBar.addEventListener(`click`, function (e) {
 //   console.log(this);
-//   // this.style.backgroundColor = randomColor();
-// }), false ;
+//   console.log(e.target);
+//   console.log(e);
+//   this.style.backgroundColor = randomColor();
+// }),
+//   false;
+
+//TOPIC Dom traversing
+const h1 = document.querySelector(`h1`);
+
+// 👉🏽GOING DOWNWARDS : CHILD
+h1.querySelectorAll(`.highlight`).forEach(el => console.log(el.textContent));
+// get the direct child
+// console.log(h1.childNodes);
+// h1.childNodes.forEach(el=> console.log(el.textContent))
+
+// get the elements inside a parent
+// console.log(h1.children);
+
+// get Number the elements inside a parent
+// console.log(h1.childElementCount);
+
+// get first child content
+// console.log(h1.firstChild);
+
+// get first/last Element  child
+// console.log(h1.firstElementChild);
+// console.log(h1.lastElementChild);
+
+// 👉🏽GOING UPWARDS : PARENT
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
+// namespaceURI:"http://www.w3.org/1999/xhtml"
+
+// PARENT element that is not direct element
+h1.closest(`header`).style.background = ` `;
+console.log(h1.closest(`header`));
+
+// 👉🏽GOING SIDEWAYS : SIBLINGS
+console.log(h1.nextElementSibling);
+// console.log(h1.previousElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children);
+// manipulating the use of dom traversing 
+[...h1.parentElement.children].forEach(function(el){
+  if(el !== h1) {
+    console.log(el)
+  el.style.background = randomColor()
+  }
+})
+
+  
