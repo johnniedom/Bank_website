@@ -11,6 +11,19 @@ const body = document.querySelector(`body`);
 
 const scrollBtn = document.querySelector(`.btn--scroll-to`);
 const section1 = document.querySelector(`#section--1`);
+// Delegation Animation
+const navBar = document.querySelector(`.nav`);
+//Page Navigation
+const link = document.querySelector(`.nav__link`);
+const links = document.querySelector(`.nav__links`);
+
+// Tabbed Components
+const tabs = document.querySelectorAll(`.operations__tab`);
+const tabsContainer = document.querySelector(`.operations__tab-container`);
+const tabsContent = document.querySelectorAll(`.operations__content`);
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
 
 const openModal = function (e) {
   e.preventDefault();
@@ -58,7 +71,7 @@ scrollBtn.addEventListener(`click`, e => {
   // );
 
   //make it scroll smoothly
-  console.log(window.scrollTo);
+  console.log(window);
 
   // old way to apply scrolling
   window.scrollTo({
@@ -69,11 +82,6 @@ scrollBtn.addEventListener(`click`, e => {
   //New way of applying scrolling
   section1.scrollIntoView({ behavior: 'smooth' });
 });
-
-//Page Navigation
-
-const link = document.querySelector(`.nav__link`);
-const links = document.querySelector(`.nav__links`);
 
 // // Using the old method way.
 // link.forEach(el =>
@@ -93,6 +101,60 @@ links.addEventListener(`click`, function (e) {
     const id = e.target.getAttribute(`href`);
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
+});
+
+// use the event delegation for faster page
+tabsContainer.addEventListener(`click`, function (e) {
+  const clicked = e.target.closest(`.operations__tab`);
+  console.log(clicked);
+
+  // Guard clause
+  if (!clicked) return;
+
+  // Removing the active class (Default)
+  tabs.forEach(tab => tab.classList.remove(`operations__tab--active`));
+  // Adding the active class to the tabbed button
+  clicked.classList.add(`operations__tab--active`);
+
+  //Active content Area
+  //removing the active content
+  tabsContent.forEach(tab => {
+    tab.classList.remove(`operations__content--active`);
+  });
+  // showing the active content
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add(`operations__content--active`);
+});
+// Menu fad animation
+const handleHover = function (e) {
+  if (e.target.classList.contains(`nav__link`)) {
+    const link = e.target;
+    const sibling = link.closest(`nav`).querySelectorAll('.nav__link');
+    const logo = link.closest(`nav`).querySelector('img');
+    //  console.log(sibling, logo, link);
+    logo.style.opacity = this;
+    console.log(this);
+    sibling.forEach(el => {
+      if (el !== link) {
+        el.style.opacity = this;
+      }
+    });
+  }
+};
+navBar.addEventListener(`mouseover`, handleHover.bind(0.5));
+navBar.addEventListener(`mouseout`, handleHover.bind(1));
+
+// sticky navigation
+window.addEventListener(`scroll`, function (e) {
+  // console.log(window.scrollY);  
+  const initial = section1.getBoundingClientRect()
+  if(window.scrollY > initial.top){
+    navBar.classList.add(`sticky`)
+  }else{
+    navBar.classList.remove(`sticky`)
+  }
+
 });
 
 ///////////////////////////////////////
@@ -228,7 +290,7 @@ const randomColor = () =>
 console.log(randomColor());
 // const linkR = document.querySelector(`.nav__link`);
 // const navLinks = document.querySelector(`.nav__links`);
-const navBar = document.querySelector(`.nav`);
+// const navBar = document.querySelector(`.nav`);
 
 // link.addEventListener(`click`, function (e) {
 //   console.log(e, e.target, e.currentTarget === this);
@@ -253,7 +315,7 @@ const navBar = document.querySelector(`.nav`);
 const h1 = document.querySelector(`h1`);
 
 // 👉🏽GOING DOWNWARDS : CHILD
-h1.querySelectorAll(`.highlight`).forEach(el => console.log(el.textContent));
+// h1.querySelectorAll(`.highlight`).forEach(el => console.log(el.textContent));
 // get the direct child
 // console.log(h1.childNodes);
 // h1.childNodes.forEach(el=> console.log(el.textContent))
@@ -277,23 +339,21 @@ h1.querySelectorAll(`.highlight`).forEach(el => console.log(el.textContent));
 // namespaceURI:"http://www.w3.org/1999/xhtml"
 
 // PARENT element that is not direct element
-h1.closest(`header`).style.background = ` `;
-console.log(h1.closest(`header`));
+// h1.closest(`header`).style.background = ` `;
+// console.log(h1.closest(`header`));
 
 // 👉🏽GOING SIDEWAYS : SIBLINGS
-console.log(h1.nextElementSibling);
+// console.log(h1.nextElementSibling);
 // console.log(h1.previousElementSibling);
 
-console.log(h1.previousSibling);
-console.log(h1.nextSibling);
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
 
-console.log(h1.parentElement.children);
-// manipulating the use of dom traversing 
-[...h1.parentElement.children].forEach(function(el){
-  if(el !== h1) {
-    console.log(el)
-  el.style.background = randomColor()
+// console.log(h1.parentElement.children);
+// manipulating the use of dom traversing
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) {
+    // console.log(el);
+    // el.style.background = randomColor()
   }
-})
-
-  
+});
