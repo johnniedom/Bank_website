@@ -147,15 +147,16 @@ navBar.addEventListener(`mouseout`, handleHover.bind(1));
 
 // sticky navigation
 window.addEventListener(`scroll`, function (e) {
-  // console.log(window.scrollY);  
-  const initial = section1.getBoundingClientRect()
-  if(window.scrollY > initial.top){
-    navBar.classList.add(`sticky`)
-  }else{
-    navBar.classList.remove(`sticky`)
+  // console.log(window.scrollY);
+  const initial = section1.getBoundingClientRect();
+  if (window.scrollY > initial.top) {
+    navBar.classList.add(`sticky`);
+  } else {
+    navBar.classList.remove(`sticky`);
   }
-
 });
+
+// Intersection observer API
 
 ///////////////////////////////////////
 //////////////////////////////////////
@@ -357,3 +358,15 @@ const h1 = document.querySelector(`h1`);
     // el.style.background = randomColor()
   }
 });
+
+// TOPIC Intersection observer API
+const obsCallback = function () {};
+
+const obsOptions =  {
+    root: null,
+    threshold: 0,
+
+};
+
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(section1);    
