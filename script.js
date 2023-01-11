@@ -9,8 +9,11 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const body = document.querySelector(`body`);
 
+const header = document.querySelector(`.header`);
+
 const scrollBtn = document.querySelector(`.btn--scroll-to`);
 const section1 = document.querySelector(`#section--1`);
+const section2 = document.querySelector(`#section--2`);
 // Delegation Animation
 const navBar = document.querySelector(`.nav`);
 //Page Navigation
@@ -134,7 +137,7 @@ const handleHover = function (e) {
     const logo = link.closest(`nav`).querySelector('img');
     //  console.log(sibling, logo, link);
     logo.style.opacity = this;
-    console.log(this);
+    // console.log(this);
     sibling.forEach(el => {
       if (el !== link) {
         el.style.opacity = this;
@@ -145,18 +148,88 @@ const handleHover = function (e) {
 navBar.addEventListener(`mouseover`, handleHover.bind(0.5));
 navBar.addEventListener(`mouseout`, handleHover.bind(1));
 
-// sticky navigation
+// sticky navigation(old way)
 window.addEventListener(`scroll`, function (e) {
   // console.log(window.scrollY);
   const initial = section1.getBoundingClientRect();
   if (window.scrollY > initial.top) {
-    navBar.classList.add(`sticky`);
+    // navBar.classList.add(`sticky`);
   } else {
-    navBar.classList.remove(`sticky`);
+    // navBar.classList.remove(`sticky`);
   }
 });
 
 // Intersection observer API
+const navHeight = navBar.getBoundingClientRect().height;
+// console.log(navHeight);
+
+const hdCallback = function (entries) {
+  const [entry] = entries;
+  // console.log(entry);
+  if (!entry.isIntersecting) navBar.classList.add(`sticky`);
+  else navBar.classList.remove(`sticky`);
+};
+
+const hdObj = {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`, // margins around the root.
+  // It could be used to expand or shrink the area of intersection
+};
+
+const hdObserver = new IntersectionObserver(hdCallback, hdObj);
+hdObserver.observe(header);
+
+// Section Reveal
+const allSections = document.querySelectorAll(`.section`);
+
+const revealSection = function (entries, observe) {
+  const [entry] = entries;
+  // console.log(entry);
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove(`section--hidden`);
+  observe.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add(`section--hidden`);
+});
+
+
+// Lazy loading images
+const imgTarget = document.querySelectorAll(`img[data-src]`)
+
+const lazyLoad = function(entries, observer){
+    const [entry] =entries
+    console.log(entry);
+    if (!entry.isIntersecting) return;
+
+    // Replace src with dat-src
+    entry.target.src = entry.target.dataset.src
+
+    entry.target.addEventListener(`load`, function(){
+      entry.target.classList.remove(`lazy-img`)
+    })
+
+    observer.unobserve(entry.target)
+}
+
+const imagObserver = new IntersectionObserver(lazyLoad, {
+  root: null,
+  threshold: 0,
+  rootMargin : `200px`
+})
+
+imgTarget.forEach(img=>{
+  // console.log(img);
+  imagObserver.observe(img)
+})
 
 ///////////////////////////////////////
 //////////////////////////////////////
@@ -172,7 +245,7 @@ window.addEventListener(`scroll`, function (e) {
 const footer = document.querySelector('.footer');
 
 // Node List
-const allSections = document.querySelectorAll('section');
+// const allSections = document.querySelectorAll('section');
 
 //HTML COLLECTIONS
 const allButtons = document.getElementsByTagName(`button`);
@@ -360,13 +433,21 @@ const h1 = document.querySelector(`h1`);
 });
 
 // TOPIC Intersection observer API
-const obsCallback = function () {};
-
-const obsOptions =  {
-    root: null,
-    threshold: 0,
-
+const obsCallback = function (entries, observer) {
+  // code that should be executed when the observed element is intersecting the root element.
+  //at the threshold that you defined
+  //  console.log(entries);
+  entries.forEach(entry => {
+    // console.log(entry);
+  });
 };
 
+const obsOptions = {
+  root: null, // the is the element that the target is intersecting or
+  //the element to use as the viewport
+  // for checking visibility of the target,
+  threshold: 0.2, //indicating at what percentage of visibility an observer's
+};
+``;
 const observer = new IntersectionObserver(obsCallback, obsOptions);
-observer.observe(section1);    
+observer.observe(section1, section2);
