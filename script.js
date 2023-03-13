@@ -126,7 +126,7 @@ tabsContainer.addEventListener(`click`, function (e) {
   });
   // showing the active content
   document
-    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .querySelector(`.operations__content--${clickeaset.tab}`)
     .classList.add(`operations__content--active`);
 });
 // Menu fad animation
@@ -185,7 +185,7 @@ const allSections = document.querySelectorAll(`.section`);
 
 const revealSection = function (entries, observe) {
   const [entry] = entries;
-  // console.log(entry);
+  console.log(entry);
   if (!entry.isIntersecting) return;
   entry.target.classList.remove(`section--hidden`);
   observe.unobserve(entry.target);

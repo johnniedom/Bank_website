@@ -33,10 +33,12 @@ observer.observe(element);
  you to pass in an options object as a second argument.
 ///////////////////////////////////////////////////////////
 const observer = new IntersectionObserver(callback, {
-  root: document.querySelector('#viewport'), // the element to use as the viewport
+  root: document.querySelector('#viewport'),
+   // the element to use as the viewport
   // for checking visibility of the target,
   // if not provided it defaults to the browser viewport
-  rootMargin: '0px', // margins around the root.
+  rootMargin: '0px',
+   // margins around the root.
   // It could be used to expand or shrink the area of intersection
   threshold: [0, 0.25, 0.5, 0.75, 1] // array of numbers between 0 and 1, 
   //indicating at what percentage of visibility an observer's
